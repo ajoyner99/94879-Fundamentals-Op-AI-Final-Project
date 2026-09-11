@@ -1,0 +1,18 @@
+# Versions pinned to match the MLflow server image in docker/compose.yaml
+# (ghcr.io/mlflow/mlflow:v2.14.1) -- an unpinned mlflow client resolves to
+# 3.x by default, and the 2.x/3.x server APIs are not compatible.
+quixstreams
+pandas
+numpy
+pyarrow
+scikit-learn
+mlflow==2.14.1
+# mlflow 2.14.1 imports pkg_resources at runtime. Newer setuptools (>=81)
+# dropped pkg_resources entirely, which breaks `import mlflow.sklearn` with
+# "ModuleNotFoundError: No module named 'pkg_resources'" on a fresh venv/
+# Python 3.12+. Pin below avoids it -- do not remove this line.
+setuptools<81
+evidently
+flask
+requests
+pyyaml

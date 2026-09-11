@@ -1,0 +1,40 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# PyCharm / IDE
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated model artifacts
+models/artifacts/
+
+# Generated monitoring outputs
+monitoring/*.html
+monitoring/reports/
+reports/
+
+# MLflow local artifacts / databases
+mlruns/
+*.db
+*.sqlite
+*.sqlite3
