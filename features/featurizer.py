@@ -145,11 +145,13 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
 
             if len(buffer) >= flush_every:
                 _append_parquet(buffer, parquet_path)
-                print(f"[featurizer] produced {processed} feature rows (flushed {len(buffer)} to parquet)")
+                consumer.commit(message=msg, asynchronous=False)
+                print(f"[featurizer] produced {processed} feature rows (flushed {len(buffer)} to parquet, committed offsets)")
                 buffer = []
             if max_messages and processed >= max_messages:
                 if buffer:
                     _append_parquet(buffer, parquet_path)
+                consumer.commit(message=msg, asynchronous=False)
                 print(f"[featurizer] reached max_messages={max_messages}, exiting")
                 break
 
@@ -169,5 +171,11 @@ if __name__ == "__main__":
     parser.add_argument("--topic_out", default="ticks.features")
     parser.add_argument("--max_messages", type=int, default=None,
                          help="Optional: exit after N messages (handy for smoke tests / grading)")
+    parser.add_argument("--parquet_path", default="data/processed/features.parquet",
+                         help="Where to write/append feature rows. Use a distinct path per run "
+                              "(e.g. data/processed/features_reference.parquet vs "
+                              "features_current.parquet) when building a drift comparison, "
+                              "so a second run doesn't append onto the first.")
     args = parser.parse_args()
-    run_featurizer(args.broker, args.topic_in, args.topic_out, args.max_messages)
+    run_featurizer(args.broker, args.topic_in, args.topic_out, args.max_messages,
+                   parquet_path=args.parquet_path)
