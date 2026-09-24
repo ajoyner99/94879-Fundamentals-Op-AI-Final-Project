@@ -34,9 +34,6 @@ monitoring/reports/
 reports/
 data/processed/
 
-# Featurizer output from load-test runs (large, regenerated every run)
-data/processed/*.parquet
-
 # MLflow local artifacts / databases
 mlruns/
 *.db
