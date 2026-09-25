@@ -25,7 +25,7 @@ git diff base-package          # full changes
 | `main`         | everyone     | Stable, working code only      |
 | `b1`           | Ana & Lauren | B1: Falling Behind             |
 | `B2---Stephen` | Stephen      | B2: Green but Broken           |
-| `B3---Vidhi`.  | Vidhi        | B3: Healthy but Wrong?         |
+| `B3---Vidhi`   | Vidhi        | B3: Healthy but Wrong?         |
 
 Work is merged into `main` once it runs and has been reviewed by at least one teammate.
 
