@@ -1,0 +1,9 @@
+comparison,feature,evidently_drift_detected,p_value,note
+control_split_half_reference,midprice_returns,False,0.737,
+control_split_half_reference,order_book_imbalance,True,2.6e-05,false alarm on same file
+control_split_half_reference,spread_normalized,True,0.0,false alarm on same file
+control_split_half_reference,trade_intensity,True,0.0,false alarm: 60s window warm-up (half means 110 vs 303)
+reference_vs_drifted,midprice_returns,False,1.0,
+reference_vs_drifted,order_book_imbalance,False,1.0,
+reference_vs_drifted,trade_intensity,False,1.0,
+reference_vs_drifted,spread_normalized,True,0.0,injected change: bid/ask widened ~3x

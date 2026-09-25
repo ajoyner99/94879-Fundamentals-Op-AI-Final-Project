@@ -1,0 +1,39 @@
+{
+  "model_path": "models/artifacts/model.pkl",
+  "tau": 5.649973855804057e-05,
+  "threshold": 0.5,
+  "tolerances": {
+    "alert_rate": 0.05,
+    "pr_auc": 0.02
+  },
+  "reference": {
+    "path": "data/processed/b3_reference.parquet",
+    "rows_scored": 633,
+    "positive_rate": 0.07266982622432859,
+    "alert_rate": 0.44549763033175355,
+    "mean_score": 0.446099564584736,
+    "pr_auc": 0.06991133197780942,
+    "precision_at_threshold": 0.06382978723404255,
+    "recall_at_threshold": 0.391304347826087
+  },
+  "current": {
+    "path": "data/processed/b3_reference.parquet",
+    "rows_scored": 633,
+    "positive_rate": 0.07266982622432859,
+    "alert_rate": 0.44549763033175355,
+    "mean_score": 0.446099564584736,
+    "pr_auc": 0.06991133197780942,
+    "precision_at_threshold": 0.06382978723404255,
+    "recall_at_threshold": 0.391304347826087
+  },
+  "deltas": {
+    "alert_rate": 0.0,
+    "pr_auc": 0.0
+  },
+  "checks": {
+    "alert_rate_shift": false,
+    "pr_auc_drop": false,
+    "pr_auc_at_or_below_floor": true
+  },
+  "behavior_changed": true
+}
