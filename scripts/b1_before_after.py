@@ -221,7 +221,7 @@ def main():
         if i == 0:
             print("\n  pausing 15 s before the next run...")
             time.sleep(15)
-    print("\nAll done. Paste both summaries back into the chat.")
+    print("\nAll done. Summaries are printed above; lag CSVs and logs are in data/b1_runs/.")
 
 
 if __name__ == "__main__":
