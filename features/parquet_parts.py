@@ -1,5 +1,5 @@
 """
-features/parquet_parts.py   (NEW FILE - not in the starter kit)
+features/parquet_parts.py
 
 B1 intervention 1: write each flush to its own small Parquet "part" file in a
 folder, instead of reading + rewriting one ever-growing file.
