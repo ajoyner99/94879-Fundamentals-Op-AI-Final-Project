@@ -7,12 +7,25 @@ into a small set of predictive features (ticks.features).
 Kept deliberately small: parse -> compute_features() -> produce. The pure
 functions at the top have no Kafka dependency, so scripts/replay.py can
 import them directly and guarantee replay == live processing.
+
+B1 INTERVENTION (not in the starter kit): --parquet_mode parts writes each
+flush to its own part file in a folder (see features/parquet_parts.py)
+instead of rereading and rewriting one growing file. The default,
+--parquet_mode single, keeps the original starter-kit behavior. Every line
+added for the intervention is marked "# B1 INTERVENTION".
 """
 import argparse
 import json
 import os
 from collections import deque
 from datetime import datetime, timedelta, timezone
+
+# B1 INTERVENTION: import works both when run as `python features/featurizer.py`
+# and when imported as `features.featurizer` (e.g. by scripts/replay.py)
+try:
+    from features.parquet_parts import PartWriter
+except ImportError:
+    from parquet_parts import PartWriter
 
 import pandas as pd
 import time
@@ -102,7 +115,8 @@ class TradeIntensityWindow:
 
 
 def run_featurizer(broker, topic_in, topic_out, max_messages=None,
-                    parquet_path="data/processed/features.parquet", flush_every=25):
+                    parquet_path="data/processed/features.parquet", flush_every=25,
+                    parquet_mode="single"):  # B1 INTERVENTION: new parameter
     """Live mode: consume ticks.raw, produce ticks.features, and periodically
     append the same rows to a Parquet file (used by training + drift report)."""
     from quixstreams import Application
@@ -120,7 +134,7 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
 
     run_start = time.perf_counter()
 
-    # CHANGE
+    # B1 DIAGNOSIS CHANGE
     timings = {
         "parse": 0.0,
         "features": 0.0,
@@ -131,6 +145,16 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
     }
 
     os.makedirs(os.path.dirname(parquet_path), exist_ok=True)
+
+    # B1 INTERVENTION: in "parts" mode, parquet_path is a FOLDER of part files
+    writer = PartWriter(parquet_path) if parquet_mode == "parts" else None
+    print(f"[featurizer] parquet_mode={parquet_mode} parquet_path={parquet_path}")
+
+    def save(rows):  # B1 INTERVENTION: one place that decides how to save
+        if writer:
+            writer.write(rows)
+        else:
+            _append_parquet(rows, parquet_path)
 
     with app.get_consumer() as consumer:
         consumer.subscribe([topic_in])
@@ -143,21 +167,21 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
                 print(f"[featurizer] consumer error: {msg.error()}")
                 continue
 
-            # CHANGE
+            # B1 DIAGNOSIS CHANGE
             start = time.perf_counter()
             tick = parse_ticker_message(msg.value())
             timings["parse"] += time.perf_counter() - start
             if tick is None or not tick.get("timestamp"):
                 continue
 
-            # CHANGE
+            # B1 DIAGNOSIS CHANGE
             start = time.perf_counter()
             features = compute_features(tick, previous_midprice)
             timings["features"] += time.perf_counter() - start
             if features is None:
                 continue
 
-            # CHANGE
+            # B1 DIAGNOSIS CHANGE
             start = time.perf_counter()
             features["trade_intensity"] = window.update(
                 parse_timestamp(tick["timestamp"])
@@ -165,7 +189,7 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
             timings["window"] += time.perf_counter() - start
             previous_midprice = features["midprice"]
 
-            # CHANGE
+            # B1 DIAGNOSIS CHANGE
             start = time.perf_counter()
             producer.produce(
                 topic=topic_out,
@@ -176,10 +200,10 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
             buffer.append(features)
             processed += 1
 
-            # CHANGE
+            # B1 DIAGNOSIS CHANGE
             if len(buffer) >= flush_every:
                 start = time.perf_counter()
-                _append_parquet(buffer, parquet_path)
+                save(buffer)  # B1 INTERVENTION: was _append_parquet(buffer, parquet_path)
                 flush_time = time.perf_counter() - start
                 timings["parquet"] += flush_time
 
@@ -214,7 +238,7 @@ def run_featurizer(broker, topic_in, topic_out, max_messages=None,
 
             if max_messages and processed >= max_messages:
                 if buffer:
-                    _append_parquet(buffer, parquet_path)
+                    save(buffer)  # B1 INTERVENTION: was _append_parquet(buffer, parquet_path)
                 consumer.commit(message=msg, asynchronous=False)
                 print(f"[featurizer] reached max_messages={max_messages}, exiting")
                 break
@@ -240,6 +264,12 @@ if __name__ == "__main__":
                               "(e.g. data/processed/features_reference.parquet vs "
                               "features_current.parquet) when building a drift comparison, "
                               "so a second run doesn't append onto the first.")
+    # B1 INTERVENTION: choose how flushes are saved
+    parser.add_argument("--parquet_mode", choices=["single", "parts"], default="single",
+                        help="single = starter-kit behavior (rewrite one growing file); "
+                             "parts = B1 intervention (each flush is a new part file in the "
+                             "folder given by --parquet_path)")
     args = parser.parse_args()
     run_featurizer(args.broker, args.topic_in, args.topic_out, args.max_messages,
-                   parquet_path=args.parquet_path)
+                   parquet_path=args.parquet_path,
+                   parquet_mode = args.parquet_mode)  # B1 INTERVENTION
