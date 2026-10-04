@@ -111,9 +111,12 @@ N_BOOT = 1000              # row-bootstrap resamples for the exploratory lift in
 ACTIONS = {
     "OK": "No action.",
     "LOW": "Open a data-quality ticket: confirm whether the input change is real or a feed/pipeline bug. No model action.",
-    "MEDIUM": "Investigate same day: check upstream feed and feature pipeline, notify model owner. No retrain without labeled evidence.",
-    "HIGH": "Escalate now: notify model owner and pipeline on-call; consider pausing alerts. "
-            "Retrain only after labeled evidence confirms the cause.",
+    "MEDIUM": "Investigate same day: check upstream feed and feature pipeline, notify model owner. "
+              "Labeled evidence is needed to establish a performance problem; root-cause analysis determines "
+              "whether retraining is appropriate.",
+    "HIGH": "Escalate now to model owner and pipeline on-call; consider pausing alerts. "
+            "Labeled evidence is needed to establish a performance problem; root-cause analysis determines "
+            "whether retraining is appropriate.",
     "PAGE": "Page on-call: restore the service (restart/rollback). Model checks are not trustworthy until the service is healthy.",
 }
 FITNESS_ACTION = ("Escalate to model owner: above-baseline performance not established on available data; "

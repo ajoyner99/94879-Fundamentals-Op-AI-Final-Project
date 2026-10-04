@@ -41,8 +41,8 @@
         "requests": 326,
         "errors": 0,
         "error_rate": 0.0,
-        "latency_ms_p50": 3.1655624916311353,
-        "latency_ms_p95": 4.572427002131008,
+        "latency_ms_p50": 2.041875006398186,
+        "latency_ms_p95": 3.0976142588770017,
         "max_abs_score_diff": 1.1102230246251565e-16,
         "system_status": "HEALTHY"
       },
@@ -128,8 +128,8 @@
         "requests": 653,
         "errors": 0,
         "error_rate": 0.0,
-        "latency_ms_p50": 3.0700829811394215,
-        "latency_ms_p95": 5.047941394150256,
+        "latency_ms_p50": 1.8823749851435423,
+        "latency_ms_p95": 2.8126500081270933,
         "max_abs_score_diff": 1.1102230246251565e-16,
         "system_status": "HEALTHY"
       },
@@ -217,8 +217,8 @@
         "requests": 327,
         "errors": 0,
         "error_rate": 0.0,
-        "latency_ms_p50": 2.9133339994587004,
-        "latency_ms_p95": 4.12142489803955,
+        "latency_ms_p50": 1.9106669933535159,
+        "latency_ms_p95": 2.834579482441768,
         "max_abs_score_diff": 1.1102230246251565e-16,
         "system_status": "HEALTHY"
       },
@@ -290,7 +290,7 @@
       "reasons": [
         "alert rate 13.5% -> 78.3%"
       ],
-      "action": "Escalate now: notify model owner and pipeline on-call; consider pausing alerts. Retrain only after labeled evidence confirms the cause.",
+      "action": "Escalate now to model owner and pipeline on-call; consider pausing alerts. Labeled evidence is needed to establish a performance problem; root-cause analysis determines whether retraining is appropriate.",
       "model_fitness_code": "above_baseline_performance_not_established",
       "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
       "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."
@@ -306,8 +306,8 @@
         "requests": 327,
         "errors": 0,
         "error_rate": 0.0,
-        "latency_ms_p50": 2.819458022713661,
-        "latency_ms_p95": 4.46880807285197,
+        "latency_ms_p50": 1.8794579664245248,
+        "latency_ms_p95": 3.0948419065680355,
         "max_abs_score_diff": 1.1102230246251565e-16,
         "system_status": "HEALTHY"
       },
@@ -379,7 +379,7 @@
       "reasons": [
         "alert rate 45.9% -> 1.8%"
       ],
-      "action": "Escalate now: notify model owner and pipeline on-call; consider pausing alerts. Retrain only after labeled evidence confirms the cause.",
+      "action": "Escalate now to model owner and pipeline on-call; consider pausing alerts. Labeled evidence is needed to establish a performance problem; root-cause analysis determines whether retraining is appropriate.",
       "model_fitness_code": "above_baseline_performance_not_established",
       "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
       "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."

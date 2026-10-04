@@ -9,7 +9,7 @@ does not change the monitor.
 Reused unchanged from monitoring/b3_monitor.py: build_scenarios(), psi(),
 classify(), the same scenario windows, model.pkl scores and labels.
 
-Grid (fixed before the results were seen; not changed afterwards):
+Grid (fixed before the final sensitivity run):
   operational PSI threshold      0.05, 0.10, 0.15, 0.25, 0.50
       used wherever the monitor uses PSI_MODERATE: feature PSI for LOW and
       score PSI for MEDIUM. The 0.25 reference line is not a severity rule.
