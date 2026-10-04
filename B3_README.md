@@ -151,8 +151,8 @@ What changed:
   the interleaved split (S0).
 - **Performance wording.** "The model is not useful" is replaced by
   "above-baseline performance is not established on the available data".
-- **Weak-model alert.** Tier 3 is now a separate retrospective, descriptive
-  diagnostic and does not set severity.
+- **Weak-model alert.** Tier 3 is now a separate retrospective diagnostic with
+  an advisory follow-up action; it never sets drift severity or PAGE status.
 - **Drift alerts.** Now an explicit ladder: Tier 1 status; feature, score and
   alert-volume drift; severity OK / LOW / MEDIUM / HIGH, with PAGE for serving
   unavailability.
@@ -226,7 +226,7 @@ the same counts and dataset-drift verdicts (No / No / Yes / Yes; S3 is exactly
 at the 50% line).
 
 Tier 1 in the saved run: all containers running/healthy, 0 API errors in every
-scenario, p95 latency 4.1-5.0 ms (latency varies between runs; quote the saved
+scenario, p95 latency 2.8-3.1 ms (latency varies between runs; quote the saved
 run), and API scores match `model.pkl` (largest difference 1.1e-16).
 
 Tier 3 (exploratory row-bootstrap interval for lift, current window): S0
