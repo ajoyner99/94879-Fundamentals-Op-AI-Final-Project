@@ -1,0 +1,192 @@
+{
+  "data_files": {
+    "reference_messages": 782,
+    "long_messages": 14076,
+    "long_over_reference": 18.0,
+    "long_is_reference_repeated_ignoring_timestamps": true,
+    "drifted_lines_changed": 653,
+    "drifted_fields_changed": [
+      "best_ask",
+      "best_bid"
+    ],
+    "spread_normalized_median_reference": 9.841164098273383e-08,
+    "spread_normalized_median_drifted": 2.9540635728104886e-07,
+    "spread_median_ratio_drifted_over_reference": 3.0017420127449905
+  },
+  "model": {
+    "type": "LogisticRegression",
+    "class_weight": "balanced",
+    "features": [
+      "midprice_returns",
+      "spread_normalized",
+      "order_book_imbalance",
+      "trade_intensity"
+    ],
+    "weights_on_standardized_features": {
+      "midprice_returns": -0.06373959312441607,
+      "spread_normalized": 0.027956231130797458,
+      "order_book_imbalance": -0.47082922902903007,
+      "trade_intensity": 0.5070240493388343
+    },
+    "intercept": -0.16221008921650107,
+    "alert_threshold": 0.5
+  },
+  "training_eval": {
+    "tau": 5.649973855804057e-05,
+    "test_rows": 2351,
+    "test_prevalence": 0.09655465759251382,
+    "pr_auc_logistic_regression": 0.10470744851290902,
+    "pr_auc_zscore_baseline": 0.09489702646845742
+  },
+  "reference_window": {
+    "rows": 653,
+    "labeled_rows": 633,
+    "positives": 46,
+    "positive_rate": 0.07266982622432859,
+    "alert_rate": 0.45941807044410415,
+    "gap_seconds": 171.053416596,
+    "rows_before_gap": 67,
+    "positives_before_gap": 20,
+    "seconds_before_gap": 13.617003382,
+    "messages_per_second_before_gap": 4.9203189659602895,
+    "seconds_after_gap": 123.74247615300001,
+    "messages_per_second_after_gap": 4.735641456499115,
+    "max_trade_intensity_before_gap": 67,
+    "rows_first_60s_after_gap": 333,
+    "mean_trade_intensity_first_60s_after_gap": 167.0,
+    "rows_after_first_60s_after_gap": 253,
+    "mean_trade_intensity_after_first_60s_after_gap": 305.02766798418975,
+    "halfway_row": 326,
+    "first_half_rows_before_gap": 67,
+    "first_half_rows_in_refill": 259,
+    "first_half_mean_trade_intensity": 110.26993865030674,
+    "second_half_mean_trade_intensity": 303.0978593272171,
+    "corr_score_vs_trade_intensity": 0.7974558611342909,
+    "corr_score_vs_label": 0.005696243056855417,
+    "corr_trade_intensity_vs_label": -0.0333865216872159,
+    "minute_table": [
+      {
+        "minute": 0,
+        "rows": 67,
+        "mean_trade_intensity": 34.0,
+        "alert_rate": 0.0,
+        "spike_rate": 0.299
+      },
+      {
+        "minute": 3,
+        "rows": 314,
+        "mean_trade_intensity": 157.5,
+        "alert_rate": 0.258,
+        "spike_rate": 0.064
+      },
+      {
+        "minute": 4,
+        "rows": 249,
+        "mean_trade_intensity": 313.361,
+        "alert_rate": 0.795,
+        "spike_rate": 0.024
+      },
+      {
+        "minute": 5,
+        "rows": 23,
+        "mean_trade_intensity": 230.478,
+        "alert_rate": 0.913,
+        "spike_rate": 0.0
+      }
+    ]
+  },
+  "evidently": {
+    "S0": {
+      "per_feature": {
+        "midprice_returns": {
+          "method": "K-S p_value",
+          "p_value": 0.8025140802600305
+        },
+        "spread_normalized": {
+          "method": "K-S p_value",
+          "p_value": 0.9999999999999997
+        },
+        "order_book_imbalance": {
+          "method": "K-S p_value",
+          "p_value": 0.9626531046395728
+        },
+        "trade_intensity": {
+          "method": "K-S p_value",
+          "p_value": 1.0
+        }
+      },
+      "drifted_count": 0.0,
+      "drifted_share": 0.0,
+      "dataset_drift": false
+    },
+    "S1": {
+      "per_feature": {
+        "midprice_returns": {
+          "method": "K-S p_value",
+          "p_value": 1.0
+        },
+        "spread_normalized": {
+          "method": "K-S p_value",
+          "p_value": 0.0
+        },
+        "order_book_imbalance": {
+          "method": "K-S p_value",
+          "p_value": 1.0
+        },
+        "trade_intensity": {
+          "method": "K-S p_value",
+          "p_value": 1.0
+        }
+      },
+      "drifted_count": 1.0,
+      "drifted_share": 0.25,
+      "dataset_drift": false
+    },
+    "S2": {
+      "per_feature": {
+        "midprice_returns": {
+          "method": "K-S p_value",
+          "p_value": 0.7367713828225343
+        },
+        "spread_normalized": {
+          "method": "K-S p_value",
+          "p_value": 1.1295380700981454e-38
+        },
+        "order_book_imbalance": {
+          "method": "K-S p_value",
+          "p_value": 2.5808258766511447e-05
+        },
+        "trade_intensity": {
+          "method": "K-S p_value",
+          "p_value": 9.04562212727477e-155
+        }
+      },
+      "drifted_count": 3.0,
+      "drifted_share": 0.75,
+      "dataset_drift": true
+    },
+    "S3": {
+      "per_feature": {
+        "midprice_returns": {
+          "method": "K-S p_value",
+          "p_value": 0.0280219857535533
+        },
+        "spread_normalized": {
+          "method": "K-S p_value",
+          "p_value": 1.0
+        },
+        "order_book_imbalance": {
+          "method": "K-S p_value",
+          "p_value": 0.9999950104275898
+        },
+        "trade_intensity": {
+          "method": "K-S p_value",
+          "p_value": 1.3463086437282435e-85
+        }
+      },
+      "drifted_count": 2.0,
+      "drifted_share": 0.5,
+      "dataset_drift": true
+    }
+  }
+}

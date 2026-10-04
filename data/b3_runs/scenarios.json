@@ -1,0 +1,388 @@
+{
+  "tau": 5.649973855804057e-05,
+  "containers": {
+    "broker": {
+      "state": "running",
+      "health": "healthy",
+      "status": "Up 9 days (healthy)"
+    },
+    "mlflow": {
+      "state": "running",
+      "health": "healthy",
+      "status": "Up 9 days (healthy)"
+    },
+    "scorer": {
+      "state": "running",
+      "health": "healthy",
+      "status": "Up 9 days (healthy)"
+    }
+  },
+  "thresholds": {
+    "alert_threshold": 0.5,
+    "psi_moderate": 0.1,
+    "psi_significant": 0.25,
+    "alert_shift_medium": 0.05,
+    "alert_shift_high": 0.2,
+    "alert_ratio_high": 2.0,
+    "ks_alpha": 0.05,
+    "dataset_drift_share": 0.5,
+    "n_boot": 1000,
+    "seed": 0
+  },
+  "scenarios": [
+    {
+      "scenario": "S0",
+      "description": "Interleaved split: odd rows vs even rows of the reference features",
+      "rows_ref": 327,
+      "rows_cur": 326,
+      "tier1": {
+        "health_ok": true,
+        "model_loaded": true,
+        "requests": 326,
+        "errors": 0,
+        "error_rate": 0.0,
+        "latency_ms_p50": 3.1655624916311353,
+        "latency_ms_p95": 4.572427002131008,
+        "max_abs_score_diff": 1.1102230246251565e-16,
+        "system_status": "HEALTHY"
+      },
+      "tier2": {
+        "features": {
+          "midprice_returns": {
+            "psi": 0.01864754836954575,
+            "ks_pvalue": 0.8025140802600305,
+            "ks_flagged": false
+          },
+          "spread_normalized": {
+            "psi": 0.002362978950813743,
+            "ks_pvalue": 0.9999999999999997,
+            "ks_flagged": false
+          },
+          "order_book_imbalance": {
+            "psi": 0.012489116007488133,
+            "ks_pvalue": 0.9626531046395728,
+            "ks_flagged": false
+          },
+          "trade_intensity": {
+            "psi": 0.001098292988519318,
+            "ks_pvalue": 1.0,
+            "ks_flagged": false
+          }
+        },
+        "before_ks_features_flagged": 0,
+        "before_dataset_drift": false,
+        "max_feature_psi": 0.01864754836954575,
+        "score_psi": 0.011323907730262104,
+        "alert_rate_ref": 0.4617737003058104,
+        "alert_rate_cur": 0.4570552147239264,
+        "alert_rate_shift": -0.00471848558188398,
+        "alert_rate_ratio": 0.9897818226140658
+      },
+      "tier3": {
+        "interval_method": "95% exploratory row-bootstrap interval (2.5th-97.5th percentiles of 1000 independent row resamples). Descriptive only: rows are sequentially dependent and the data are limited and effectively in-sample, so these are not formal confidence intervals or hypothesis tests. Tier 3 does not set severity.",
+        "reference": {
+          "rows_labeled": 317,
+          "positives": 23,
+          "positive_rate": 0.07255520504731862,
+          "pr_auc": 0.07216793107334085,
+          "lift": -0.00038727397397776697,
+          "precision_at_threshold": 0.056338028169014086,
+          "recall_at_threshold": 0.34782608695652173
+        },
+        "current": {
+          "rows_labeled": 316,
+          "positives": 23,
+          "positive_rate": 0.07278481012658228,
+          "pr_auc": 0.07236964975684697,
+          "lift": -0.00041516036973530956,
+          "precision_at_threshold": 0.07142857142857142,
+          "recall_at_threshold": 0.43478260869565216
+        },
+        "lift_row_bootstrap_interval_95_current": [
+          -0.012073496598824859,
+          0.031921007703645
+        ],
+        "exploratory_change_in_labeled_performance": {
+          "lift_change": -2.7886395757542592e-05,
+          "lift_change_row_bootstrap_interval_95": [
+            -0.03533336719651922,
+            0.034145867868526046
+          ]
+        }
+      },
+      "severity": "OK",
+      "reasons": [],
+      "action": "No action.",
+      "model_fitness_code": "above_baseline_performance_not_established",
+      "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
+      "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."
+    },
+    {
+      "scenario": "S1",
+      "description": "Reference features vs features built from sample_ticks_drifted.jsonl",
+      "rows_ref": 653,
+      "rows_cur": 653,
+      "tier1": {
+        "health_ok": true,
+        "model_loaded": true,
+        "requests": 653,
+        "errors": 0,
+        "error_rate": 0.0,
+        "latency_ms_p50": 3.0700829811394215,
+        "latency_ms_p95": 5.047941394150256,
+        "max_abs_score_diff": 1.1102230246251565e-16,
+        "system_status": "HEALTHY"
+      },
+      "tier2": {
+        "features": {
+          "midprice_returns": {
+            "psi": 0.0,
+            "ks_pvalue": 1.0,
+            "ks_flagged": false
+          },
+          "spread_normalized": {
+            "psi": 8.244516131493654,
+            "ks_pvalue": 0.0,
+            "ks_flagged": true
+          },
+          "order_book_imbalance": {
+            "psi": 0.0,
+            "ks_pvalue": 1.0,
+            "ks_flagged": false
+          },
+          "trade_intensity": {
+            "psi": 0.0,
+            "ks_pvalue": 1.0,
+            "ks_flagged": false
+          }
+        },
+        "before_ks_features_flagged": 1,
+        "before_dataset_drift": false,
+        "max_feature_psi": 8.244516131493654,
+        "score_psi": 0.0052657497296498814,
+        "alert_rate_ref": 0.45941807044410415,
+        "alert_rate_cur": 0.46248085758039814,
+        "alert_rate_shift": 0.0030627871362939874,
+        "alert_rate_ratio": 1.0066666666666666
+      },
+      "tier3": {
+        "interval_method": "95% exploratory row-bootstrap interval (2.5th-97.5th percentiles of 1000 independent row resamples). Descriptive only: rows are sequentially dependent and the data are limited and effectively in-sample, so these are not formal confidence intervals or hypothesis tests. Tier 3 does not set severity.",
+        "reference": {
+          "rows_labeled": 633,
+          "positives": 46,
+          "positive_rate": 0.07266982622432859,
+          "pr_auc": 0.06991133197780942,
+          "lift": -0.0027584942465191664,
+          "precision_at_threshold": 0.06382978723404255,
+          "recall_at_threshold": 0.391304347826087
+        },
+        "current": {
+          "rows_labeled": 633,
+          "positives": 46,
+          "positive_rate": 0.07266982622432859,
+          "pr_auc": 0.06917496955950901,
+          "lift": -0.003494856664819579,
+          "precision_at_threshold": 0.06338028169014084,
+          "recall_at_threshold": 0.391304347826087
+        },
+        "lift_row_bootstrap_interval_95_current": [
+          -0.012252285523549542,
+          0.015127282142326583
+        ],
+        "exploratory_change_in_labeled_performance": {
+          "lift_change": -0.0007363624183004125,
+          "lift_change_row_bootstrap_interval_95": [
+            -0.01961082259265111,
+            0.019377892221648263
+          ]
+        }
+      },
+      "severity": "LOW",
+      "reasons": [
+        "feature drift only: spread_normalized"
+      ],
+      "action": "Open a data-quality ticket: confirm whether the input change is real or a feed/pipeline bug. No model action.",
+      "model_fitness_code": "above_baseline_performance_not_established",
+      "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
+      "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."
+    },
+    {
+      "scenario": "S2",
+      "description": "Split-half: first half vs second half of the reference features (split at the middle row)",
+      "rows_ref": 326,
+      "rows_cur": 327,
+      "tier1": {
+        "health_ok": true,
+        "model_loaded": true,
+        "requests": 327,
+        "errors": 0,
+        "error_rate": 0.0,
+        "latency_ms_p50": 2.9133339994587004,
+        "latency_ms_p95": 4.12142489803955,
+        "max_abs_score_diff": 1.1102230246251565e-16,
+        "system_status": "HEALTHY"
+      },
+      "tier2": {
+        "features": {
+          "midprice_returns": {
+            "psi": 0.0688515219436121,
+            "ks_pvalue": 0.7367713828225343,
+            "ks_flagged": false
+          },
+          "spread_normalized": {
+            "psi": 2.8560648400812623,
+            "ks_pvalue": 1.1295380700981454e-38,
+            "ks_flagged": true
+          },
+          "order_book_imbalance": {
+            "psi": 0.3244377516898788,
+            "ks_pvalue": 2.5808258766511447e-05,
+            "ks_flagged": true
+          },
+          "trade_intensity": {
+            "psi": 7.893808096330304,
+            "ks_pvalue": 9.04562212727477e-155,
+            "ks_flagged": true
+          }
+        },
+        "before_ks_features_flagged": 3,
+        "before_dataset_drift": true,
+        "max_feature_psi": 7.893808096330304,
+        "score_psi": 4.432671522081245,
+        "alert_rate_ref": 0.13496932515337423,
+        "alert_rate_cur": 0.7828746177370031,
+        "alert_rate_shift": 0.6479052925836288,
+        "alert_rate_ratio": 5.80038921323325
+      },
+      "tier3": {
+        "interval_method": "95% exploratory row-bootstrap interval (2.5th-97.5th percentiles of 1000 independent row resamples). Descriptive only: rows are sequentially dependent and the data are limited and effectively in-sample, so these are not formal confidence intervals or hypothesis tests. Tier 3 does not set severity.",
+        "reference": {
+          "rows_labeled": 326,
+          "positives": 20,
+          "positive_rate": 0.06134969325153374,
+          "pr_auc": 0.0588269388836083,
+          "lift": -0.002522754367925442,
+          "precision_at_threshold": 0.0,
+          "recall_at_threshold": 0.0
+        },
+        "current": {
+          "rows_labeled": 307,
+          "positives": 26,
+          "positive_rate": 0.08469055374592833,
+          "pr_auc": 0.07000792338824648,
+          "lift": -0.014682630357681858,
+          "precision_at_threshold": 0.07563025210084033,
+          "recall_at_threshold": 0.6923076923076923
+        },
+        "lift_row_bootstrap_interval_95_current": [
+          -0.025086584486427015,
+          0.00577585056701237
+        ],
+        "exploratory_change_in_labeled_performance": {
+          "lift_change": -0.012159875989756416,
+          "lift_change_row_bootstrap_interval_95": [
+            -0.029535502286597484,
+            0.008090568250343214
+          ]
+        }
+      },
+      "severity": "HIGH",
+      "reasons": [
+        "alert rate 13.5% -> 78.3%"
+      ],
+      "action": "Escalate now: notify model owner and pipeline on-call; consider pausing alerts. Retrain only after labeled evidence confirms the cause.",
+      "model_fitness_code": "above_baseline_performance_not_established",
+      "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
+      "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."
+    },
+    {
+      "scenario": "S3",
+      "description": "Reference features vs features built from sample_ticks_msgloss.jsonl (scripts/b3_inject_faults.py; its labels are computed from the reduced message stream)",
+      "rows_ref": 653,
+      "rows_cur": 327,
+      "tier1": {
+        "health_ok": true,
+        "model_loaded": true,
+        "requests": 327,
+        "errors": 0,
+        "error_rate": 0.0,
+        "latency_ms_p50": 2.819458022713661,
+        "latency_ms_p95": 4.46880807285197,
+        "max_abs_score_diff": 1.1102230246251565e-16,
+        "system_status": "HEALTHY"
+      },
+      "tier2": {
+        "features": {
+          "midprice_returns": {
+            "psi": 0.13754658173718332,
+            "ks_pvalue": 0.0280219857535533,
+            "ks_flagged": true
+          },
+          "spread_normalized": {
+            "psi": 0.0006470020521252545,
+            "ks_pvalue": 1.0,
+            "ks_flagged": false
+          },
+          "order_book_imbalance": {
+            "psi": 0.00318872353755928,
+            "ks_pvalue": 0.9999950104275898,
+            "ks_flagged": false
+          },
+          "trade_intensity": {
+            "psi": 4.88530291673018,
+            "ks_pvalue": 1.3463086437282435e-85,
+            "ks_flagged": true
+          }
+        },
+        "before_ks_features_flagged": 2,
+        "before_dataset_drift": true,
+        "max_feature_psi": 4.88530291673018,
+        "score_psi": 2.9886622305125066,
+        "alert_rate_ref": 0.45941807044410415,
+        "alert_rate_cur": 0.01834862385321101,
+        "alert_rate_shift": -0.44106944659089314,
+        "alert_rate_ratio": 0.039938837920489294
+      },
+      "tier3": {
+        "interval_method": "95% exploratory row-bootstrap interval (2.5th-97.5th percentiles of 1000 independent row resamples). Descriptive only: rows are sequentially dependent and the data are limited and effectively in-sample, so these are not formal confidence intervals or hypothesis tests. Tier 3 does not set severity.",
+        "reference": {
+          "rows_labeled": 633,
+          "positives": 46,
+          "positive_rate": 0.07266982622432859,
+          "pr_auc": 0.06991133197780942,
+          "lift": -0.0027584942465191664,
+          "precision_at_threshold": 0.06382978723404255,
+          "recall_at_threshold": 0.391304347826087
+        },
+        "current": {
+          "rows_labeled": 307,
+          "positives": 74,
+          "positive_rate": 0.24104234527687296,
+          "pr_auc": 0.2014689931507147,
+          "lift": -0.03957335212615826,
+          "precision_at_threshold": 0.0,
+          "recall_at_threshold": 0.0
+        },
+        "lift_row_bootstrap_interval_95_current": [
+          -0.0588259112921541,
+          0.005185148956757126
+        ],
+        "exploratory_change_in_labeled_performance": {
+          "lift_change": -0.03681485787963909,
+          "lift_change_row_bootstrap_interval_95": [
+            -0.06509895327386928,
+            0.00709129465280928
+          ]
+        }
+      },
+      "severity": "HIGH",
+      "reasons": [
+        "alert rate 45.9% -> 1.8%"
+      ],
+      "action": "Escalate now: notify model owner and pipeline on-call; consider pausing alerts. Retrain only after labeled evidence confirms the cause.",
+      "model_fitness_code": "above_baseline_performance_not_established",
+      "model_fitness": "ABOVE-BASELINE PERFORMANCE NOT ESTABLISHED ON AVAILABLE DATA",
+      "fitness_action": "Escalate to model owner: above-baseline performance not established on available data; review threshold, features and training data."
+    }
+  ]
+}
