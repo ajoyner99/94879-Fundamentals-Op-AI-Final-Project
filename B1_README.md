@@ -20,14 +20,16 @@ depend on how much history exists.
 
 ### Files added or changed (not in the starter kit)
 
-| File                               | Status | Purpose |
-|------------------------------------|--------|---------|
-| `features/parquet_parts.py`        | new | `PartWriter`: writes each flush as `part-000001.parquet`, `part-000002.parquet`, … in a folder. Writes to a temporary `_inprogress-` name first, then renames, so readers never see a half-written file. |
+| File                               | Status | Purpose                                                                                                                                                                                                                                       |
+|------------------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `features/parquet_parts.py`        | new | `PartWriter`: writes each flush as `part-000001.parquet`, `part-000002.parquet`, … in a folder. Writes to a temporary `_inprogress-` name first, then renames, so readers never see a half-written file.                                      |
 | `features/featurizer.py`           | changed | New `--parquet_mode` flag: `single` (default, original starter-kit behavior) or `parts` (intervention). Every intervention line is marked `# B1 INTERVENTION`. Lines marked `# CHANGE` are the timing instrumentation added during diagnosis. |
-| `scripts/make_b1_parquet_files.py` | new | Creates the controlled starting files with 1,000, 10,000, and 50,000 rows. |
-| `scripts/b1_size_comparison.py`    | new | **Main experiment.** Starting-size experiment run for both saving methods. |
-| `scripts/b1_before_after.py`       | new | **Supporting experiment.** Full live runs at rate 4000, measuring lag over time, before vs after. |
-| `scripts/b1_lag_recorder.py`       | new | Records current offset, log-end offset, lag, and arrival rate every 3 s. Started automatically by `b1_before_after.py`. |
+| `scripts/make_b1_parquet_files.py` | new | Creates the controlled starting files with 1,000, 10,000, and 50,000 rows.                                                                                                                                                                    |
+| `scripts/b1_size_comparison.py`    | new | **Main experiment.** Starting-size experiment run for both saving methods.                                                                                                                                                                    |
+| `scripts/b1_before_after.py`       | new | **Supporting experiment.** Full live runs at rate 4000, measuring lag over time, before vs after.                                                                                                                                             |
+| `scripts/b1_lag_recorder.py`       | new | Records current offset, log-end offset, lag, and arrival rate every 3 s. Started automatically by `b1_before_after.py`.                                                                                                                       |
+| `scripts/b1_make_figures.py`       | new | Builds figures used in presentation and memo.                                                                                                                                                                                                 |
+| `scripts/b1_timing_breakdown.py`   | new | reads the featurizer timing logs and reports the share of time spent on Parquet saves, commits, and everything else.                                                                                                                          |
 
 The default `--parquet_mode single` keeps the original behavior, so "before" and "after" runs
 use the same code and differ by a single flag.
