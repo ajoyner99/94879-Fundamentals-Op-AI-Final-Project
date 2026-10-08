@@ -192,7 +192,8 @@ Manually reset the bookmark before running the featurizer again:
 # 1. reset the bookmark so lag starts at 0 (featurizer must be stopped first)
 docker exec broker /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group featurizer_group --topic ticks.raw --reset-offsets --to-latest --execute
 
-# 2. use a brand-new --parquet_path (and copy the seed in first if the run needs history)```
+# 2. use a brand-new --parquet_path (and copy the seed in first if the run needs history)
+```
 
 ### Tradeoffs and limitations
 
