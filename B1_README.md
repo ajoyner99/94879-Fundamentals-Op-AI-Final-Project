@@ -219,3 +219,49 @@ Both experiment scripts stop with a `[STOPPED]` message rather than run a bad ex
 - **wrong row count in a starting file:** recreate the size files or check the seed.
 - **featurizer never connected / did not finish:** read the featurizer log named in the message.
 - **log does not show `parquet_mode=...`:** the old `featurizer.py` is still in place.
+---
+
+### Follow-up experiments (after presentation feedback)
+
+These answer the presentation feedback on B1. All runs were on one laptop in one session, so
+they are compared only with each other (memo Appendix A, Tables A1-A3 and Figures 1 and 4).
+
+| File | Status | Purpose |
+|------|--------|---------|
+| `features/featurizer.py` | changed | New `--flush_every` flag (default 25 = starter-kit behavior): rows per Parquet save and offset commit. |
+| `features/compact_parts.py` | new | Compaction: merges a part-file folder into one file (temp file + rename), re-reads it to check the row count, and only then optionally deletes the parts (`--delete-parts`). Refuses to write inside the parts folder. |
+| `scripts/b1_before_after.py` | changed | New `--seed`, `--flush_every`, `--modes`. Fixes a bug where a run could read another run's lag CSV when one label started with another (e.g. `..._t1` and `..._t1_f500`). |
+| `scripts/b1_followup.py` | new | Runs single/25, parts/25, parts/100 and parts/500 back to back, then checks identity, times readers and compaction, and writes the result tables. |
+| `scripts/b1_check_identity.py` | new | Compares two outputs (file or part folder) value by value after sorting, and prints a SHA-256 fingerprint of each. |
+| `scripts/b1_log_analysis.py` | new | Analysis only: per-step timing in ms and %, output fingerprints, save time during vs after the replay. |
+| `scripts/b1_figure1.py` | new | Analysis only: redraws memo Figure 1 with the achieved arrival rate in each panel title. |
+
+**Run** (Docker stack running, nothing else running; about 8-10 minutes per pass):
+
+```powershell
+python scripts/b1_followup.py --tag ana1 --seed data/processed/inst_rate4000_t1_ana.parquet
+python scripts/b1_followup.py --tag ana2 --seed data/processed/inst_rate4000_t1_ana.parquet --reverse
+python scripts/b1_log_analysis.py --tags ana1 ana2
+python scripts/b1_figure1.py
+```
+
+The seed is any output of the full workload with 11,750 rows. `--reverse` runs the same four
+configurations in the opposite order, so run order cannot explain the result.
+
+**Output:** `data/b1_runs/followup_<tag>/` holds `summary.csv` (lag, files, saves, commits,
+identity), `reader_cost.csv`, `results.md` and `lag_over_time.png`;
+`data/b1_runs/followup_analysis.md` holds per-step timing, fingerprints and the
+during/after-replay save times; `data/b1_runs/figure1_baseline_diagnosis.png` is memo Figure 1.
+
+**Notes for reading the results**
+
+- **Lag of 4 after every run is not backlog.** The workload produces 11,754 feature rows, but each
+  run stops the featurizer at 11,750 (`--max_messages`), so its last 4 market messages are never read.
+- **Lag resolution equals the flush size.** Lag counts messages past the last committed offset, and
+  offsets are committed once per flush, so at a 500-row flush lag can read up to ~500 while the
+  featurizer is keeping up.
+- **Rows at risk on a crash.** Rows are saved before the commit, so a crash between the two replays up
+  to one flush (25, 100 or 500 rows), duplicating it in Parquet without losing any.
+- **Not measured:** lag was sampled every 3 s, and training was timed only at its feature-loading step
+  (`pd.read_parquet`), because full training needs MLflow.
+

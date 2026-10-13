@@ -1,0 +1,5 @@
+run,mode,flush_every,start_rows,end_rows,rows_added,files,lag_csv,peak_lag,lag_samples_nonzero,final_lag,arrival_peak_per_s,arrival_mean_per_s,saves_with_timing,offset_commits,save_total_s,commit_total_s,save_ms_per_flush,save_share,commit_share,other_share,measured_total_s,identical_to_single_25
+before_rate4000_ana1,single,25,11750,23500,11750,1,data\b1_runs\lag_before_rate4000_ana1_20261013_172341.csv,3112,2420 3112 994 4 4 4 4,4,2283,1564,470,471,9.533,1.523,20.28,0.841,0.134,0.024,11.331,True
+after_rate4000_ana1,parts,25,11750,23500,11750,471,data\b1_runs\lag_after_rate4000_ana1_20261013_172445.csv,92,80 92 4 4 4 4,4,1811,1530,470,471,2.542,1.052,5.41,0.641,0.266,0.093,3.963,True
+after_rate4000_ana1_f100,parts,100,11750,23500,11750,119,data\b1_runs\lag_after_rate4000_ana1_f100_20261013_172541.csv,151,101 123 151 4 4 4 4,4,1372,1157,117,118,2.063,0.265,17.63,0.659,0.085,0.257,3.132,True
+after_rate4000_ana1_f500,parts,500,11750,23500,11750,25,data\b1_runs\lag_after_rate4000_ana1_f500_20261013_172639.csv,336,115 336 227 4 4 4 4,4,1471,1149,23,24,0.541,0.055,23.54,0.365,0.037,0.598,1.484,True

@@ -1,0 +1,9 @@
+what,files,median_s,min_s,max_s
+read single 25-row output,1,0.0056,0.0047,0.0095
+read parts 25-row output,471,0.1019,0.0913,0.1046
+read parts 100-row output,119,0.0293,0.0273,0.0298
+read parts 500-row output,25,0.0086,0.0084,0.0092
+compact 25-row parts -> 1 file,471,0.831,0.7384,0.8588
+read compacted file,1,0.0056,0.0054,0.0061
+drift report on 25-row parts,471,6.606,,
+drift report on compacted file,1,5.37,,
