@@ -5,6 +5,7 @@ A minimal HTTP scoring service. Loads the pickled model produced by
 models/train_baseline.py and exposes two endpoints:
 
   GET  /health          -> {"status": "ok", "model_loaded": bool}
+                            HTTP 200 when the model is loaded, HTTP 503 when it is not
   POST /score           -> {"score": float, "spike": bool}
                             body: {"midprice_returns": .., "spread_normalized": ..,
                                     "order_book_imbalance": .., "trade_intensity": ..}
@@ -35,7 +36,8 @@ def load_model():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok", "model_loaded": _state["model"] is not None})
+    loaded = _state["model"] is not None
+    return jsonify({"status": "ok", "model_loaded": loaded}), (200 if loaded else 503)
 
 
 @app.route("/score", methods=["POST"])

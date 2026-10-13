@@ -61,17 +61,18 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.scorer
     container_name: scorer
+    restart: unless-stopped
     ports:
       - "8000:8000"
     environment:
-      MODEL_PATH: /app/models/artifact/model.pkl
+      MODEL_PATH: /app/models/artifacts/model.pkl
     volumes:
       - ../models/artifacts:/app/models/artifacts:ro
     depends_on:
       broker:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      test: ["CMD-SHELL", "python -c \"import json,urllib.request; body=json.load(urllib.request.urlopen('http://localhost:8000/health')); ok=body.get('status')=='ok' and body.get('model_loaded') is True; raise SystemExit(0 if ok else 1)\""]
       interval: 10s
       timeout: 5s
       retries: 5
