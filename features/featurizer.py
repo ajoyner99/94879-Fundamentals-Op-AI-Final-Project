@@ -269,7 +269,11 @@ if __name__ == "__main__":
                         help="single = starter-kit behavior (rewrite one growing file); "
                              "parts = B1 intervention (each flush is a new part file in the "
                              "folder given by --parquet_path)")
+    # B1 FOLLOW-UP: flush size was fixed at 25 rows; expose it to test larger flushes
+    parser.add_argument("--flush_every", type=int, default=25,
+                        help="rows per Parquet save and offset commit (starter kit: 25)")
     args = parser.parse_args()
     run_featurizer(args.broker, args.topic_in, args.topic_out, args.max_messages,
                    parquet_path=args.parquet_path,
+                   flush_every=args.flush_every,  # B1 FOLLOW-UP
                    parquet_mode = args.parquet_mode)  # B1 INTERVENTION

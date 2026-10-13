@@ -23,6 +23,11 @@ Usage (from the project folder, Docker stack running, nothing else running):
     python scripts/b1_before_after.py --tag t2 --reverse    # AFTER first, then BEFORE
 Running it twice with opposite order checks that "which run went first" (laptop
 warming up, caches, etc.) is not what explains the difference.
+
+B1 FOLLOW-UP options (defaults reproduce the original experiment):
+    --seed <file>        starting history (default: Lauren's drain_test_t1 seed)
+    --flush_every <n>    rows per save + commit (default 25)
+    --modes parts        run only one mode
 """
 import argparse
 import csv
@@ -99,7 +104,7 @@ def prepare_start(mode, path):
 
 
 def summarize_lag(label):
-    files = sorted(glob.glob(os.path.join("data", "b1_runs", f"lag_{label}_*.csv")))
+    files = sorted(glob.glob(os.path.join("data", "b1_runs", f"lag_{label}_[0-9]*.csv")))
     if not files:
         return "  (recorder CSV not found)"
     with open(files[-1], newline="") as f:
@@ -122,11 +127,12 @@ def summarize_flush_times(log_path):
             m = re.search(r"parquet_last=([\d.]+)s", line)
             if m:
                 times.append(float(m.group(1)))
-    if len(times) < 40:
+    if len(times) < 4:  # B1 FOLLOW-UP: large flushes give fewer than 40 timing lines
         return f"  only {len(times)} flush timings found in {log_path}"
-    first, last = statistics.mean(times[:20]), statistics.mean(times[-20:])
+    k = min(20, len(times) // 2)
+    first, last = statistics.mean(times[:k]), statistics.mean(times[-k:])
     return (f"  flushes: {len(times)}, parquet total: {sum(times):.2f} s\n"
-            f"  avg parquet time per flush: first 20 = {first:.4f} s, last 20 = {last:.4f} s")
+            f"  avg parquet time per flush: first {k} = {first:.4f} s, last {k} = {last:.4f} s")
 
 
 def check_mode_in_log(log_path, mode):
@@ -136,8 +142,10 @@ def check_mode_in_log(log_path, mode):
                   "Is the updated featurizer.py in place?")
 
 
-def run_one(mode, tag):
+def run_one(mode, tag, flush_every=25):
     label = f"{'before' if mode == 'single' else 'after'}_rate{RATE}_{tag}"
+    if flush_every != 25:  # B1 FOLLOW-UP: keep original names for 25-row runs
+        label += f"_f{flush_every}"
     path = (f"data/processed/features_{label}.parquet" if mode == "single"
             else f"data/processed/features_{label}_parts")
     print(f"\n=== {label}  (--parquet_mode {mode}) ===")
@@ -158,6 +166,7 @@ def run_one(mode, tag):
         featurizer = subprocess.Popen([sys.executable, "-u", "features/featurizer.py",
                                        "--parquet_mode", mode,
                                        "--parquet_path", path,
+                                       "--flush_every", str(flush_every),  # B1 FOLLOW-UP
                                        "--max_messages", str(ROWS_PER_RUN)],
                                       stdout=feat_log, stderr=subprocess.STDOUT)
 
@@ -199,13 +208,20 @@ def run_one(mode, tag):
     check_mode_in_log(feat_log_path, mode)
     print(summarize_flush_times(feat_log_path))
     print(summarize_lag(label))
+    return {"label": label, "mode": mode, "flush_every": flush_every, "path": path,  # B1 FOLLOW-UP
+            "start_rows": start_rows, "end_rows": end_rows, "feat_log": feat_log_path}
 
 
 def main():
+    global SEED
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", required=True, help="short name for this pair of runs, e.g. t1")
     ap.add_argument("--reverse", action="store_true", help="run AFTER first, then BEFORE")
+    ap.add_argument("--seed", default=SEED, help="starting-history file (~11,750 rows)")  # B1 FOLLOW-UP
+    ap.add_argument("--flush_every", type=int, default=25)  # B1 FOLLOW-UP
+    ap.add_argument("--modes", nargs="+", choices=["single", "parts"], default=["single", "parts"])  # B1 FOLLOW-UP
     args = ap.parse_args()
+    SEED = args.seed
 
     if not os.path.exists("features/featurizer.py"):
         stop("Run this from the project folder (where the features/ and scripts/ folders are).")
@@ -215,10 +231,10 @@ def main():
         stop(f"Seed {SEED} not found.")
     os.makedirs(os.path.join("data", "b1_runs"), exist_ok=True)
 
-    modes = ["parts", "single"] if args.reverse else ["single", "parts"]
+    modes = list(reversed(args.modes)) if args.reverse else args.modes
     for i, mode in enumerate(modes):
-        run_one(mode, args.tag)
-        if i == 0:
+        run_one(mode, args.tag, args.flush_every)
+        if i < len(modes) - 1:
             print("\n  pausing 15 s before the next run...")
             time.sleep(15)
     print("\nAll done. Summaries are printed above; lag CSVs and logs are in data/b1_runs/.")
