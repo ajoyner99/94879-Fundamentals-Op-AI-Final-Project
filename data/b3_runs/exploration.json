@@ -1,0 +1,132 @@
+{
+  "note": "Provenance only: reproduces AI-assistant exploratory checks run before parts of the design were proposed. Not evaluation evidence and not validation of any threshold.",
+  "tau": 5.649973855804057e-05,
+  "rows_dropped_as_first_60s": 67,
+  "E1_split_half": {
+    "all_rows": {
+      "rows_ref": 326,
+      "rows_cur": 327,
+      "feature_psi": {
+        "midprice_returns": 0.0688515219436121,
+        "spread_normalized": 2.8560648400812623,
+        "order_book_imbalance": 0.3244377516898788,
+        "trade_intensity": 7.893808096330304
+      },
+      "score_psi": 4.432671522081245,
+      "alert_rate_ref": 0.13496932515337423,
+      "alert_rate_cur": 0.7828746177370031
+    },
+    "first_60s_dropped": {
+      "rows_ref": 293,
+      "rows_cur": 293,
+      "feature_psi": {
+        "midprice_returns": 0.0866333435380707,
+        "spread_normalized": 5.17286984676758,
+        "order_book_imbalance": 0.4496101200420391,
+        "trade_intensity": 6.956141394802923
+      },
+      "score_psi": 4.2986101147473805,
+      "alert_rate_ref": 0.22184300341296928,
+      "alert_rate_cur": 0.8020477815699659
+    }
+  },
+  "E2_reference_vs_drifted": {
+    "first_60s_dropped": {
+      "rows_ref": 586,
+      "rows_cur": 586,
+      "feature_psi": {
+        "midprice_returns": 0.0,
+        "spread_normalized": 8.289652377462176,
+        "order_book_imbalance": 0.0,
+        "trade_intensity": 0.0
+      },
+      "score_psi": 0.0019012509869275574,
+      "alert_rate_ref": 0.5119453924914675,
+      "alert_rate_cur": 0.515358361774744
+    }
+  },
+  "E3_feature_edits": {
+    "note": "Feature-space sensitivity probe, not a pipeline experiment: edits applied directly to already-computed features; no Kafka or featurizer; not evaluation evidence. The pipeline-faithful follow-up to the trade-intensity probe is scenario S3 in b3_monitor.py.",
+    "all_labeled_rows": {
+      "reference": {
+        "rows": 633,
+        "alert_rate": 0.44549763033175355,
+        "mean_score": 0.446099564584736,
+        "pr_auc": 0.06991133197780942
+      },
+      "order_book_imbalance_x_-1": {
+        "rows": 633,
+        "alert_rate": 0.17377567140600317,
+        "mean_score": 0.36995046609763976,
+        "pr_auc": 0.06674252429726132
+      },
+      "trade_intensity_x_0.5": {
+        "rows": 633,
+        "alert_rate": 0.00631911532385466,
+        "mean_score": 0.32458521338045776,
+        "pr_auc": 0.07194523862611608
+      }
+    },
+    "first_60s_dropped": {
+      "order_book_imbalance_x_-1": {
+        "rows_ref": 586,
+        "rows_cur": 586,
+        "feature_psi": {
+          "midprice_returns": 0.0,
+          "spread_normalized": 0.0,
+          "order_book_imbalance": 0.6257466964846095,
+          "trade_intensity": 0.0
+        },
+        "score_psi": 0.622419852875395,
+        "alert_rate_ref": 0.5119453924914675,
+        "alert_rate_cur": 0.19112627986348124
+      },
+      "trade_intensity_x_0.5": {
+        "rows_ref": 586,
+        "rows_cur": 586,
+        "feature_psi": {
+          "midprice_returns": 0.0,
+          "spread_normalized": 0.0,
+          "order_book_imbalance": 0.0,
+          "trade_intensity": 5.812344131111216
+        },
+        "score_psi": 3.5605539593281303,
+        "alert_rate_ref": 0.5119453924914675,
+        "alert_rate_cur": 0.006825938566552901
+      }
+    }
+  },
+  "E4_interleaved": {
+    "rows_ref": 327,
+    "rows_cur": 326,
+    "feature_psi": {
+      "midprice_returns": 0.01864754836954575,
+      "spread_normalized": 0.002362978950813743,
+      "order_book_imbalance": 0.012489116007488133,
+      "trade_intensity": 0.001098292988519318
+    },
+    "score_psi": 0.011323907730262104,
+    "alert_rate_ref": 0.4617737003058104,
+    "alert_rate_cur": 0.4570552147239264,
+    "feature_ks_pvalue": {
+      "midprice_returns": 0.8025140802600305,
+      "spread_normalized": 0.9999999999999997,
+      "order_book_imbalance": 0.9626531046395728,
+      "trade_intensity": 1.0
+    }
+  },
+  "E5_row_bootstrap_reference": {
+    "resamples_requested": 1000,
+    "resamples_used": 1000,
+    "seed": 0,
+    "positives": 46,
+    "pr_auc_95_interval": [
+      0.049654164317434614,
+      0.09841058326088428
+    ],
+    "lift_95_interval": [
+      -0.01223318143184914,
+      0.01660993775274294
+    ]
+  }
+}

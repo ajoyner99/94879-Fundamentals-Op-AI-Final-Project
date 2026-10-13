@@ -1,0 +1,201 @@
+{
+  "note": "Sensitivity analysis of the existing monitor's drift-severity settings. Not a validation or optimization of the thresholds. Reference ordering is the intended operational ordering, not ground truth.",
+  "reference_ordering": {
+    "S0": "OK",
+    "S1": "LOW",
+    "S2": "HIGH",
+    "S3": "HIGH"
+  },
+  "grid": {
+    "psi_threshold": [
+      0.05,
+      0.1,
+      0.15,
+      0.25,
+      0.5
+    ],
+    "alert_shift_medium": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "alert_shift_high": [
+      0.1,
+      0.2,
+      0.3,
+      0.4
+    ],
+    "alert_ratio_high": [
+      1.5,
+      2.0,
+      3.0
+    ],
+    "psi_bins": [
+      5,
+      10,
+      20
+    ],
+    "psi_floor": [
+      1e-06,
+      0.0001,
+      0.001
+    ]
+  },
+  "excluded_rule": "alert_shift_medium >= alert_shift_high",
+  "valid_combinations": 1485,
+  "full_match": {
+    "count": 1485,
+    "pct": 100.0
+  },
+  "not_full_match": {
+    "count": 0,
+    "pct": 0.0
+  },
+  "per_scenario": {
+    "S0": {
+      "matches": 1485,
+      "severity_counts": {
+        "OK": 1485
+      }
+    },
+    "S1": {
+      "matches": 1485,
+      "severity_counts": {
+        "LOW": 1485
+      }
+    },
+    "S2": {
+      "matches": 1485,
+      "severity_counts": {
+        "HIGH": 1485
+      }
+    },
+    "S3": {
+      "matches": 1485,
+      "severity_counts": {
+        "HIGH": 1485
+      }
+    }
+  },
+  "per_parameter": {
+    "psi_threshold": [
+      {
+        "value": 0.05,
+        "combinations": 297,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.1,
+        "combinations": 297,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.15,
+        "combinations": 297,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.25,
+        "combinations": 297,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.5,
+        "combinations": 297,
+        "pct_full_match": 100.0
+      }
+    ],
+    "alert_shift_medium": [
+      {
+        "value": 0.02,
+        "combinations": 540,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.05,
+        "combinations": 540,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.1,
+        "combinations": 405,
+        "pct_full_match": 100.0
+      }
+    ],
+    "alert_shift_high": [
+      {
+        "value": 0.1,
+        "combinations": 270,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.2,
+        "combinations": 405,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.3,
+        "combinations": 405,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.4,
+        "combinations": 405,
+        "pct_full_match": 100.0
+      }
+    ],
+    "alert_ratio_high": [
+      {
+        "value": 1.5,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 2.0,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 3.0,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      }
+    ],
+    "psi_bins": [
+      {
+        "value": 5,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 10,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 20,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      }
+    ],
+    "psi_floor": [
+      {
+        "value": 1e-06,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.0001,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      },
+      {
+        "value": 0.001,
+        "combinations": 495,
+        "pct_full_match": 100.0
+      }
+    ]
+  },
+  "change_patterns": [],
+  "non_matching_combinations": []
+}
