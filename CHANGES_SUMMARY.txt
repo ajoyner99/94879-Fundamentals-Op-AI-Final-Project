@@ -6,9 +6,8 @@
  B3_README.md                                                                             |  261 +++++
  B3_Team_Summary.pdf                                                                      |  143 +++
  B3_interim_checkpoint_v3.md                                                              |   37 +
- B3_slides.pptx                                                                           |  Bin 0 -> 2816732 bytes
- B3_slides_draft.md                                                                       |  126 +++
- README.md => STARTER_KIT_README.md                                                       |    0
+ README.md                                                                                |  227 ++--
+ STARTER_KIT_README.md                                                                    |  167 +++
  TEAM_README.md                                                                           |   42 +
  data/b1_runs/1_baseline/lag_baseline_instrumented_lj_20260924_144019.csv                 |   19 +
  data/b1_runs/2_rate_search_fresh/lag_inst_rate1000_t1_lj_20260924_145421.csv             |    9 +
@@ -104,10 +103,9 @@
  scripts/b1_make_figures.py                                                               |  365 +++++++
  scripts/b1_size_comparison.py                                                            |  222 ++++
  scripts/b1_timing_breakdown.py                                                           |   44 +
- scripts/b3_docs/README.md                                                                |   39 +
+ scripts/b3_docs/README.md                                                                |   31 +
  scripts/b3_docs/build_explainer.py                                                       |  700 ++++++++++++
- scripts/b3_docs/build_slides.py                                                          |  246 +++++
  scripts/b3_docs/build_team_summary.py                                                    |  223 ++++
  scripts/b3_inject_faults.py                                                              |   54 +
  scripts/make_b1_parquet_files.py                                                         |   23 +
- 112 files changed, 19901 insertions(+), 10 deletions(-)
+ 110 files changed, 19748 insertions(+), 177 deletions(-)
